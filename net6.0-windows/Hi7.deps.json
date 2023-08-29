@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "Hi7/1.0.0": {
+      "Hi7/1.0.4": {
         "dependencies": {
           "HandyControls": "3.3.11",
           "HtmlAgilityPack": "1.11.46",
@@ -221,7 +221,7 @@
     }
   },
   "libraries": {
-    "Hi7/1.0.0": {
+    "Hi7/1.0.4": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
