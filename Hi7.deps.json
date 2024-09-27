@@ -9,18 +9,18 @@
       "Hi7/1.0.8": {
         "dependencies": {
           "FontAwesome.WPF": "4.7.0.9",
-          "HandyControls": "3.3.11",
-          "HtmlAgilityPack": "1.11.46",
+          "HandyControls": "3.5.3",
           "JWT": "9.0.0",
-          "LibGit2Sharp": "0.27.2",
-          "LibGit2Sharp.NativeBinaries": "2.0.320",
-          "MaterialDesignColors": "2.0.6",
-          "MaterialDesignThemes": "4.5.0",
-          "MySqlConnector": "2.2.6",
+          "LibGit2Sharp": "0.30.0",
+          "LibGit2Sharp.NativeBinaries": "2.0.322",
+          "MaterialDesignColors": "3.0.0",
+          "MaterialDesignThemes": "5.0.0",
+          "Microsoft.Web.WebView2": "1.0.1518.46",
+          "MySqlConnector": "2.3.7",
           "Newtonsoft.Json": "13.0.1",
-          "RestSharp": "106.11.7",
-          "System.Drawing.Common": "6.0.0",
-          "System.Management": "7.0.2",
+          "RestSharp": "106.12.0",
+          "System.Drawing.Common": "8.0.1",
+          "System.Management": "8.0.0",
           "ThaiNationalIDCard": "2.0.0"
         },
         "runtime": {
@@ -35,19 +35,11 @@
           }
         }
       },
-      "HandyControls/3.3.11": {
+      "HandyControls/3.5.3": {
         "runtime": {
           "lib/net6.0/HandyControl.dll": {
-            "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.3.0.0"
-          }
-        }
-      },
-      "HtmlAgilityPack/1.11.46": {
-        "runtime": {
-          "lib/netstandard2.0/HtmlAgilityPack.dll": {
-            "assemblyVersion": "1.11.46.0",
-            "fileVersion": "1.11.46.0"
+            "assemblyVersion": "3.5.2.0",
+            "fileVersion": "3.5.2.0"
           }
         }
       },
@@ -62,101 +54,170 @@
           }
         }
       },
-      "LibGit2Sharp/0.27.2": {
+      "LibGit2Sharp/0.30.0": {
         "dependencies": {
-          "LibGit2Sharp.NativeBinaries": "2.0.320"
+          "LibGit2Sharp.NativeBinaries": "2.0.322"
         },
         "runtime": {
           "lib/net6.0/LibGit2Sharp.dll": {
-            "assemblyVersion": "0.27.0.0",
-            "fileVersion": "0.27.2.0"
+            "assemblyVersion": "0.30.0.0",
+            "fileVersion": "0.30.0.0"
           }
         }
       },
-      "LibGit2Sharp.NativeBinaries/2.0.320": {
+      "LibGit2Sharp.NativeBinaries/2.0.322": {
         "runtimeTargets": {
-          "runtimes/linux-arm/native/libgit2-e632535.so": {
+          "runtimes/linux-arm/native/libgit2-a418d9d.so": {
             "rid": "linux-arm",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/linux-arm64/native/libgit2-e632535.so": {
+          "runtimes/linux-arm64/native/libgit2-a418d9d.so": {
             "rid": "linux-arm64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/linux-musl-arm/native/libgit2-e632535.so": {
+          "runtimes/linux-musl-arm/native/libgit2-a418d9d.so": {
             "rid": "linux-musl-arm",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/linux-musl-arm64/native/libgit2-e632535.so": {
+          "runtimes/linux-musl-arm64/native/libgit2-a418d9d.so": {
             "rid": "linux-musl-arm64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/linux-musl-x64/native/libgit2-e632535.so": {
+          "runtimes/linux-musl-x64/native/libgit2-a418d9d.so": {
             "rid": "linux-musl-x64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/linux-x64/native/libgit2-e632535.so": {
+          "runtimes/linux-x64/native/libgit2-a418d9d.so": {
             "rid": "linux-x64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/osx-arm64/native/libgit2-e632535.dylib": {
+          "runtimes/osx-arm64/native/libgit2-a418d9d.dylib": {
             "rid": "osx-arm64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/osx-x64/native/libgit2-e632535.dylib": {
+          "runtimes/osx-x64/native/libgit2-a418d9d.dylib": {
             "rid": "osx-x64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/win-arm64/native/git2-e632535.dll": {
+          "runtimes/win-arm64/native/git2-a418d9d.dll": {
             "rid": "win-arm64",
             "assetType": "native",
-            "fileVersion": "1.6.4.0"
+            "fileVersion": "1.7.2.0"
           },
-          "runtimes/win-x64/native/git2-e632535.dll": {
+          "runtimes/win-x64/native/git2-a418d9d.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "1.6.4.0"
+            "fileVersion": "1.7.2.0"
           },
-          "runtimes/win-x86/native/git2-e632535.dll": {
+          "runtimes/win-x86/native/git2-a418d9d.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "1.6.4.0"
+            "fileVersion": "1.7.2.0"
           }
         }
       },
-      "MaterialDesignColors/2.0.6": {
+      "MaterialDesignColors/3.0.0": {
         "runtime": {
-          "lib/netcoreapp3.1/MaterialDesignColors.dll": {
-            "assemblyVersion": "2.0.6.0",
-            "fileVersion": "2.0.6.0"
+          "lib/net6.0/MaterialDesignColors.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.0.0"
           }
         }
       },
-      "MaterialDesignThemes/4.5.0": {
+      "MaterialDesignThemes/5.0.0": {
         "dependencies": {
-          "MaterialDesignColors": "2.0.6"
+          "MaterialDesignColors": "3.0.0",
+          "Microsoft.Xaml.Behaviors.Wpf": "1.1.39"
         },
         "runtime": {
-          "lib/netcoreapp3.1/MaterialDesignThemes.Wpf.dll": {
-            "assemblyVersion": "4.5.0.0",
-            "fileVersion": "4.5.0.0"
+          "lib/net6.0/MaterialDesignThemes.Wpf.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.0.0"
           }
         }
       },
-      "Microsoft.Win32.SystemEvents/6.0.0": {},
-      "MySqlConnector/2.2.6": {
+      "Microsoft.Extensions.Logging.Abstractions/7.0.1": {
+        "runtime": {
+          "lib/net6.0/Microsoft.Extensions.Logging.Abstractions.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.723.27404"
+          }
+        }
+      },
+      "Microsoft.Web.WebView2/1.0.1518.46": {
+        "runtime": {
+          "lib/netcoreapp3.0/Microsoft.Web.WebView2.Core.dll": {
+            "assemblyVersion": "1.0.1518.46",
+            "fileVersion": "1.0.1518.46"
+          },
+          "lib/netcoreapp3.0/Microsoft.Web.WebView2.WinForms.dll": {
+            "assemblyVersion": "1.0.1518.46",
+            "fileVersion": "1.0.1518.46"
+          },
+          "lib/netcoreapp3.0/Microsoft.Web.WebView2.Wpf.dll": {
+            "assemblyVersion": "1.0.1518.46",
+            "fileVersion": "1.0.1518.46"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win-arm64/native/WebView2Loader.dll": {
+            "rid": "win-arm64",
+            "assetType": "native",
+            "fileVersion": "1.0.1518.46"
+          },
+          "runtimes/win-x64/native/WebView2Loader.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "1.0.1518.46"
+          },
+          "runtimes/win-x86/native/WebView2Loader.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "1.0.1518.46"
+          }
+        }
+      },
+      "Microsoft.Win32.SystemEvents/8.0.0": {
+        "runtime": {
+          "lib/net6.0/Microsoft.Win32.SystemEvents.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Microsoft.Xaml.Behaviors.Wpf/1.1.39": {
+        "runtime": {
+          "lib/net5.0-windows7.0/Microsoft.Xaml.Behaviors.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.39.4716"
+          }
+        }
+      },
+      "MySqlConnector/2.3.7": {
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "7.0.1",
+          "System.Diagnostics.DiagnosticSource": "7.0.2"
+        },
         "runtime": {
           "lib/net6.0/MySqlConnector.dll": {
             "assemblyVersion": "2.0.0.0",
-            "fileVersion": "2.2.6.0"
+            "fileVersion": "2.3.7.0"
           }
         }
       },
@@ -176,46 +237,64 @@
           }
         }
       },
-      "RestSharp/106.11.7": {
+      "RestSharp/106.12.0": {
         "runtime": {
           "lib/netstandard2.0/RestSharp.dll": {
-            "assemblyVersion": "106.11.7.0",
-            "fileVersion": "106.11.7.0"
+            "assemblyVersion": "106.12.0.0",
+            "fileVersion": "106.12.0.0"
           }
         }
       },
-      "System.CodeDom/7.0.0": {
+      "System.CodeDom/8.0.0": {
         "runtime": {
           "lib/net6.0/System.CodeDom.dll": {
-            "assemblyVersion": "7.0.0.0",
-            "fileVersion": "7.0.22.51805"
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
           }
         }
       },
-      "System.Drawing.Common/6.0.0": {
+      "System.Diagnostics.DiagnosticSource/7.0.2": {
         "dependencies": {
-          "Microsoft.Win32.SystemEvents": "6.0.0"
+          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/System.Diagnostics.DiagnosticSource.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.423.11508"
+          }
         }
       },
-      "System.Management/7.0.2": {
+      "System.Drawing.Common/8.0.1": {
         "dependencies": {
-          "System.CodeDom": "7.0.0"
+          "Microsoft.Win32.SystemEvents": "8.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/System.Drawing.Common.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.123.58006"
+          }
+        }
+      },
+      "System.Management/8.0.0": {
+        "dependencies": {
+          "System.CodeDom": "8.0.0"
         },
         "runtime": {
           "lib/net6.0/System.Management.dll": {
-            "assemblyVersion": "7.0.0.2",
-            "fileVersion": "7.0.723.27404"
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
           }
         },
         "runtimeTargets": {
           "runtimes/win/lib/net6.0/System.Management.dll": {
             "rid": "win",
             "assetType": "runtime",
-            "assemblyVersion": "7.0.0.2",
-            "fileVersion": "7.0.723.27404"
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
           }
         }
       },
+      "System.Runtime.CompilerServices.Unsafe/6.0.0": {},
       "ThaiNationalIDCard/2.0.0": {
         "dependencies": {
           "PCSC": "3.7.0"
@@ -242,19 +321,12 @@
       "path": "fontawesome.wpf/4.7.0.9",
       "hashPath": "fontawesome.wpf.4.7.0.9.nupkg.sha512"
     },
-    "HandyControls/3.3.11": {
+    "HandyControls/3.5.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-sfIuJmYVJb07rNBsy1SvZ8X8XHbt1P7wWkVJbZIwD4j4mgztGN6q46pJqLps0iP7lagLKyKlLeAU/pIX7xjsVA==",
-      "path": "handycontrols/3.3.11",
-      "hashPath": "handycontrols.3.3.11.nupkg.sha512"
-    },
-    "HtmlAgilityPack/1.11.46": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-dLMn4EVfJBHWmWK4Uh0XGD76FPLHI0qr2Tm0s1m/xmgiHb1JUb9zB8AzO8HtrkBBlMN6JfCUBYddhqC0hZNR+g==",
-      "path": "htmlagilitypack/1.11.46",
-      "hashPath": "htmlagilitypack.1.11.46.nupkg.sha512"
+      "sha512": "sha512-VZ38Re5I8T7WJPLTMamMyGvcVs442FKY/P7XEkDl8vh5eEz/dKE0I0/r5p/Kmyip8rIA0td89Fh8WdYe/RfBLw==",
+      "path": "handycontrols/3.5.3",
+      "hashPath": "handycontrols.3.5.3.nupkg.sha512"
     },
     "JWT/9.0.0": {
       "type": "package",
@@ -263,47 +335,68 @@
       "path": "jwt/9.0.0",
       "hashPath": "jwt.9.0.0.nupkg.sha512"
     },
-    "LibGit2Sharp/0.27.2": {
+    "LibGit2Sharp/0.30.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-TYIfwuumwmZFjxwRFz5y2MyTA8jc19MejSyRRTCS/TflhrdQPH7H84ueyCpY0+xkNWThEd+dCnkuf7XuH3tt+A==",
-      "path": "libgit2sharp/0.27.2",
-      "hashPath": "libgit2sharp.0.27.2.nupkg.sha512"
+      "sha512": "sha512-1cBg/7nz6q+yzvComhqQaTS4nbXloLp/x29ZgY/Rr82ohpkuaWT8ZYzsPLFvs1zmCh/4xQbVt5sQxazGblgRig==",
+      "path": "libgit2sharp/0.30.0",
+      "hashPath": "libgit2sharp.0.30.0.nupkg.sha512"
     },
-    "LibGit2Sharp.NativeBinaries/2.0.320": {
+    "LibGit2Sharp.NativeBinaries/2.0.322": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-7vIqOhB+5LOi9arXi8IdlkWURpQEiMtnwVP//djA7cQvIVfpC4bZSnQIDe4kwwvsU/w1oH0YkBTgMmpkVndNbg==",
-      "path": "libgit2sharp.nativebinaries/2.0.320",
-      "hashPath": "libgit2sharp.nativebinaries.2.0.320.nupkg.sha512"
+      "sha512": "sha512-EWQaEevzc8uS1ZGS6T83jqUPBY//2WUSCHwbZHBoHOjlfSehqr30nm/VAhJPzjam/69sv7nlLKVcho9t2XuR/Q==",
+      "path": "libgit2sharp.nativebinaries/2.0.322",
+      "hashPath": "libgit2sharp.nativebinaries.2.0.322.nupkg.sha512"
     },
-    "MaterialDesignColors/2.0.6": {
+    "MaterialDesignColors/3.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-eZNiLlMy7Ag9f3MnhVxSzkG2IIGCaRfqZKt6npEcEjLQ9kSgCYO5oUd8AgJjhpfCKwyf+GO5VDc5R88QSDTHHg==",
-      "path": "materialdesigncolors/2.0.6",
-      "hashPath": "materialdesigncolors.2.0.6.nupkg.sha512"
+      "sha512": "sha512-yIAqOd9RYY7JUnspmBaL/PK+NEbRFFMCS43AT1YWM5MBkGAU5rUYh9q11zzEfqFcz2jDO6Zaf9W+m4Y1dGhatQ==",
+      "path": "materialdesigncolors/3.0.0",
+      "hashPath": "materialdesigncolors.3.0.0.nupkg.sha512"
     },
-    "MaterialDesignThemes/4.5.0": {
+    "MaterialDesignThemes/5.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-G26hIGFwGH5q46CD59zGiAs4aLsASsKCCBqgnISPwIcq8pAfKRRAKxXfOQJgNDyIUnVm5Ug67gldsEgeWP6GoQ==",
-      "path": "materialdesignthemes/4.5.0",
-      "hashPath": "materialdesignthemes.4.5.0.nupkg.sha512"
+      "sha512": "sha512-Az/2+YP+AdtyNceaU42cFo7Fl7KBrFkMa56uvesR363kZyOrASb0OnMvi0Ou4j1x0zwGa19AaK/vspDUBNDlBQ==",
+      "path": "materialdesignthemes/5.0.0",
+      "hashPath": "materialdesignthemes.5.0.0.nupkg.sha512"
     },
-    "Microsoft.Win32.SystemEvents/6.0.0": {
+    "Microsoft.Extensions.Logging.Abstractions/7.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-hqTM5628jSsQiv+HGpiq3WKBl2c8v1KZfby2J6Pr7pEPlK9waPdgEO6b8A/+/xn/yZ9ulv8HuqK71ONy2tg67A==",
-      "path": "microsoft.win32.systemevents/6.0.0",
-      "hashPath": "microsoft.win32.systemevents.6.0.0.nupkg.sha512"
+      "sha512": "sha512-pkeBFx0vqMW/A3aUVHh7MPu3WkBhaVlezhSZeb1c9XD0vUReYH1TLFSy5MxJgZfmz5LZzYoErMorlYZiwpOoNA==",
+      "path": "microsoft.extensions.logging.abstractions/7.0.1",
+      "hashPath": "microsoft.extensions.logging.abstractions.7.0.1.nupkg.sha512"
     },
-    "MySqlConnector/2.2.6": {
+    "Microsoft.Web.WebView2/1.0.1518.46": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-oYHl9TNhJXBEqfuiaEsOdBPkdULOcCCbqZJzYhy0rtREnMVoluG73GM8+gwBCMb1vbjv9K1ehQnhe0cxdxfOCA==",
-      "path": "mysqlconnector/2.2.6",
-      "hashPath": "mysqlconnector.2.2.6.nupkg.sha512"
+      "sha512": "sha512-1yQc90jUrLBmwtxPR8YIvJkBi/ZFLchkTUuw5TIjuNwKHVqAZv9AWGHSWrJigTLRuC0c/ivc6WbUY52/BbaIqQ==",
+      "path": "microsoft.web.webview2/1.0.1518.46",
+      "hashPath": "microsoft.web.webview2.1.0.1518.46.nupkg.sha512"
+    },
+    "Microsoft.Win32.SystemEvents/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9opKRyOKMCi2xJ7Bj7kxtZ1r9vbzosMvRrdEhVhDz8j8MoBGgB+WmC94yH839NPH+BclAjtQ/pyagvi/8gDLkw==",
+      "path": "microsoft.win32.systemevents/8.0.0",
+      "hashPath": "microsoft.win32.systemevents.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.Xaml.Behaviors.Wpf/1.1.39": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8PZKqw9QOcu42xk8puY4P1+EXHL9YGOR9b7qhaYx5cILHul456H073tj99vyPcCt0W0781T9RwHqkx507ZyUpQ==",
+      "path": "microsoft.xaml.behaviors.wpf/1.1.39",
+      "hashPath": "microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512"
+    },
+    "MySqlConnector/2.3.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-YiVOxvJ+vAYW8NT9gHv8RxKCDFCSXAObF3z0Ou/8WRv8Lsn2QsxaPW5xEwPE+xCcAq6BGkrI8GTOC09Xg09blQ==",
+      "path": "mysqlconnector/2.3.7",
+      "hashPath": "mysqlconnector.2.3.7.nupkg.sha512"
     },
     "Newtonsoft.Json/13.0.1": {
       "type": "package",
@@ -319,33 +412,47 @@
       "path": "pcsc/3.7.0",
       "hashPath": "pcsc.3.7.0.nupkg.sha512"
     },
-    "RestSharp/106.11.7": {
+    "RestSharp/106.12.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-NzndH096CTulvq+ihr7u1mBJ29oukdi9A8bypQJk+kaHxbRzTTrtgsEEQAb04ptTUZmQa7cgo7uF5z7NuEPX1Q==",
-      "path": "restsharp/106.11.7",
-      "hashPath": "restsharp.106.11.7.nupkg.sha512"
+      "sha512": "sha512-irOsQHe5nTJB0BKxGQnTX1dsgCPl5dLTxvL7gbl98JiFPiHMN4wpFyUG/66ZpaFCsIrPKh6XwozWXlwYe9JwYQ==",
+      "path": "restsharp/106.12.0",
+      "hashPath": "restsharp.106.12.0.nupkg.sha512"
     },
-    "System.CodeDom/7.0.0": {
+    "System.CodeDom/8.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-GLltyqEsE5/3IE+zYRP5sNa1l44qKl9v+bfdMcwg+M9qnQf47wK3H0SUR/T+3N4JEQXF3vV4CSuuo0rsg+nq2A==",
-      "path": "system.codedom/7.0.0",
-      "hashPath": "system.codedom.7.0.0.nupkg.sha512"
+      "sha512": "sha512-WTlRjL6KWIMr/pAaq3rYqh0TJlzpouaQ/W1eelssHgtlwHAH25jXTkUphTYx9HaIIf7XA6qs/0+YhtLEQRkJ+Q==",
+      "path": "system.codedom/8.0.0",
+      "hashPath": "system.codedom.8.0.0.nupkg.sha512"
     },
-    "System.Drawing.Common/6.0.0": {
+    "System.Diagnostics.DiagnosticSource/7.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-NfuoKUiP2nUWwKZN6twGqXioIe1zVD0RIj2t976A+czLHr2nY454RwwXs6JU9Htc6mwqL6Dn/nEL3dpVf2jOhg==",
-      "path": "system.drawing.common/6.0.0",
-      "hashPath": "system.drawing.common.6.0.0.nupkg.sha512"
+      "sha512": "sha512-hYr3I9N9811e0Bjf2WNwAGGyTuAFbbTgX1RPLt/3Wbm68x3IGcX5Cl75CMmgT6WlNwLQ2tCCWfqYPpypjaf2xA==",
+      "path": "system.diagnostics.diagnosticsource/7.0.2",
+      "hashPath": "system.diagnostics.diagnosticsource.7.0.2.nupkg.sha512"
     },
-    "System.Management/7.0.2": {
+    "System.Drawing.Common/8.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-/qEUN91mP/MUQmJnM5y5BdT7ZoPuVrtxnFlbJ8a3kBJGhe2wCzBfnPFtK2wTtEEcf3DMGR9J00GZZfg6HRI6yA==",
-      "path": "system.management/7.0.2",
-      "hashPath": "system.management.7.0.2.nupkg.sha512"
+      "sha512": "sha512-x0rAZECxIGx/YVjN28YRdpqka0+H7YMN9741FUDzipXPDzesd60gef/LI0ZCOcYSDsacTLTHvMAvxHG+TjbNNQ==",
+      "path": "system.drawing.common/8.0.1",
+      "hashPath": "system.drawing.common.8.0.1.nupkg.sha512"
+    },
+    "System.Management/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jrK22i5LRzxZCfGb+tGmke2VH7oE0DvcDlJ1HAKYU8cPmD8XnpUT0bYn2Gy98GEhGjtfbR/sxKTVb+dE770pfA==",
+      "path": "system.management/8.0.0",
+      "hashPath": "system.management.8.0.0.nupkg.sha512"
+    },
+    "System.Runtime.CompilerServices.Unsafe/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/iUeP3tq1S0XdNNoMz5C9twLSrM/TH+qElHkXWaPvuNOt+99G75NrV0OS2EqHx5wMN7popYjpc8oTjC1y16DLg==",
+      "path": "system.runtime.compilerservices.unsafe/6.0.0",
+      "hashPath": "system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
     },
     "ThaiNationalIDCard/2.0.0": {
       "type": "package",
