@@ -12,11 +12,11 @@
           "FirebaseAdmin": "3.1.0",
           "FontAwesome.WPF": "4.7.0.9",
           "Google.Cloud.Firestore": "3.9.0",
-          "HandyControls": "3.5.3",
+          "HandyControls": "3.6.0",
           "JWT": "9.0.0",
           "LibGit2Sharp": "0.30.0",
           "LibGit2Sharp.NativeBinaries": "2.0.322",
-          "MaterialDesignColors": "3.0.0",
+          "MaterialDesignColors": "5.2.1",
           "MaterialDesignThemes": "5.0.0",
           "Microsoft.Web.WebView2": "1.0.1518.46",
           "Minio": "6.0.3",
@@ -269,11 +269,11 @@
           }
         }
       },
-      "HandyControls/3.5.3": {
+      "HandyControls/3.6.0": {
         "runtime": {
           "lib/net6.0/HandyControl.dll": {
-            "assemblyVersion": "3.5.2.0",
-            "fileVersion": "3.5.2.0"
+            "assemblyVersion": "3.6.0.0",
+            "fileVersion": "3.6.0.0"
           }
         }
       },
@@ -358,17 +358,17 @@
           }
         }
       },
-      "MaterialDesignColors/3.0.0": {
+      "MaterialDesignColors/5.2.1": {
         "runtime": {
           "lib/net6.0/MaterialDesignColors.dll": {
-            "assemblyVersion": "3.0.0.0",
-            "fileVersion": "3.0.0.0"
+            "assemblyVersion": "5.2.1.0",
+            "fileVersion": "5.2.1.0"
           }
         }
       },
       "MaterialDesignThemes/5.0.0": {
         "dependencies": {
-          "MaterialDesignColors": "3.0.0",
+          "MaterialDesignColors": "5.2.1",
           "Microsoft.Xaml.Behaviors.Wpf": "1.1.39"
         },
         "runtime": {
@@ -873,12 +873,12 @@
       "path": "grpc.net.common/2.66.0",
       "hashPath": "grpc.net.common.2.66.0.nupkg.sha512"
     },
-    "HandyControls/3.5.3": {
+    "HandyControls/3.6.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-VZ38Re5I8T7WJPLTMamMyGvcVs442FKY/P7XEkDl8vh5eEz/dKE0I0/r5p/Kmyip8rIA0td89Fh8WdYe/RfBLw==",
-      "path": "handycontrols/3.5.3",
-      "hashPath": "handycontrols.3.5.3.nupkg.sha512"
+      "sha512": "sha512-1xJD4+/VkZ+tg2GYIFDJmWsTA6yylxzuxZiNMMIv5i/zFlTfAyq+HMPGIZf9GkUObe3QQd9mbtWyDju9BLI9dg==",
+      "path": "handycontrols/3.6.0",
+      "hashPath": "handycontrols.3.6.0.nupkg.sha512"
     },
     "JWT/9.0.0": {
       "type": "package",
@@ -901,12 +901,12 @@
       "path": "libgit2sharp.nativebinaries/2.0.322",
       "hashPath": "libgit2sharp.nativebinaries.2.0.322.nupkg.sha512"
     },
-    "MaterialDesignColors/3.0.0": {
+    "MaterialDesignColors/5.2.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-yIAqOd9RYY7JUnspmBaL/PK+NEbRFFMCS43AT1YWM5MBkGAU5rUYh9q11zzEfqFcz2jDO6Zaf9W+m4Y1dGhatQ==",
-      "path": "materialdesigncolors/3.0.0",
-      "hashPath": "materialdesigncolors.3.0.0.nupkg.sha512"
+      "sha512": "sha512-D0HW6E2/kzsnEWCh1KDG/K09Fpkvs9mR3n91Y8YSOsEAoQmGZbVAj58ssyAxGTiIPj2zB4ZVnwxkizwO35/v8A==",
+      "path": "materialdesigncolors/5.2.1",
+      "hashPath": "materialdesigncolors.5.2.1.nupkg.sha512"
     },
     "MaterialDesignThemes/5.0.0": {
       "type": "package",

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Leaflet Map Click with Satellite</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* style สำหรับ label (tooltip แบบถาวร) */
+        .leaflet-tooltip.hospital-label {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            color: white !important;
+            font-size: 6pt !important;
+            font-weight: normal !important;
+            pointer-events: none; /* ไม่ขวางการคลิก */
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+
+            .leaflet-tooltip.hospital-label:before {
+                display: none !important;
+            }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Base layers
+        const normalLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap'
+        });
+        const satelliteLayer = L.tileLayer(
+            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+            { maxZoom: 18, attribution: 'Tiles © Esri' }
+        );
+
+        const map = L.map('map', {
+            center: [13.736717, 100.523186], // initial
+            zoom: 6,
+            layers: [normalLayer]
+        });
+
+        L.control.layers({ "แผนที่ปกติ": normalLayer, "ภาพดาวเทียม": satelliteLayer }).addTo(map);
+
+        // ✅ ซูมไปที่ขอบเขตจังหวัดอุบลราชธานี
+        const ubonBounds = [
+            [14.0, 104.2], // Southwest
+            [15.9, 106.1]  // Northeast
+        ];
+        map.fitBounds(ubonBounds, {
+            paddingTopLeft: [40, 40],     // ซ้าย 50px, บน 100px
+            paddingBottomRight: [50, 30]  // ขวา 80px, ล่าง 120px
+        });
+
+        const icons = {
+            HI: L.icon({
+                iconUrl: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                iconSize: [24, 24],
+                iconAnchor: [12, 24],
+                popupAnchor: [0, -24]
+            }),
+            MO: L.icon({
+                iconUrl: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                iconSize: [24, 24],
+                iconAnchor: [12, 24],
+                popupAnchor: [0, -24]
+            }),
+            default: L.icon({
+                iconUrl: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                iconSize: [24, 24],
+                iconAnchor: [12, 24],
+                popupAnchor: [0, -24]
+            })
+        };
+
+        const markersLayer = L.layerGroup().addTo(map);
+
+        function parseCoord(v) {
+            if (v === null || v === undefined) return NaN;
+            return parseFloat(String(v).trim().replace(',', '.'));
+        }
+
+        function addMarkers(data) {
+            markersLayer.clearLayers();
+
+            data.forEach(item => {
+                const lat = parseCoord(item.la);
+                const lng = parseCoord(item.lo);
+
+                if (isNaN(lat) || isNaN(lng)) {
+                    console.warn('Invalid coords for', item.hcode, item.hname, item.la, item.lo);
+                    return;
+                }
+
+                const vender = item.vender || 'default';
+                const icon = icons[vender] || icons.default;
+
+                const typeText = item.type == "1" ? "โรงพยาบาลรัฐ" :
+                    item.type == "2" ? "โรงพยาบาลเอกชน" :
+                        item.type == "3" ? "สำนักงาน" : "ไม่ระบุ";
+
+                const popupContent = `
+                        <div style="font-size:6pt;">
+                            <b>(${item.hcode}) ${item.hname} - ${typeText}</b><br>
+                            <b>Vender:</b> ${item.vender}<br>
+                            <b>Status:</b> ${item.status}<br>
+                            <b>Lat:</b> ${lat}<br>
+                            <b>Lng:</b> ${lng}
+                        </div>
+                    `;
+
+                const marker = L.marker([lat, lng], { icon: icon }).addTo(markersLayer);
+                marker.bindPopup(popupContent);
+
+                const labelText = `${item.vender}`;
+                marker.bindTooltip(labelText, {
+                    permanent: true,
+                    direction: 'top',
+                    offset: [0, -18],
+                    className: 'hospital-label'
+                });
+            });
+        }
+
+        let clickMarker;
+        map.on('click', function (e) {
+            const lat = e.latlng.lat.toFixed(6);
+            const lng = e.latlng.lng.toFixed(6);
+            if (clickMarker) map.removeLayer(clickMarker);
+            clickMarker = L.marker([lat, lng]).addTo(map);
+            const message = JSON.stringify({ lat: lat, lng: lng });
+            if (window.chrome && window.chrome.webview) {
+                window.chrome.webview.postMessage(message);
+            } else console.log("Clicked at: ", message);
+        });
+
+        function markOnMap(lat, lng) {
+            if (clickMarker) map.removeLayer(clickMarker);
+            clickMarker = L.marker([lat, lng]).addTo(map);
+            map.setView([lat, lng], 16);
+        }
+
+        window.addEventListener('message', (ev) => {
+            try {
+                const data = ev.data;
+                const parsed = typeof data === 'string' ? JSON.parse(data) : data;
+                addMarkers(parsed);
+            } catch (err) {
+                console.error('Failed to parse message', err);
+            }
+        });
+    </script>
+</body>
+</html>
