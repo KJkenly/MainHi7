@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โรงพยาบาลจำลอง 3D - ระบบจำลองสถานการณ์โรงพยาบาล (Smart HI Simulator)</title>
+    <link rel="icon" href="data:,">
+    <!-- Google Fonts: Kanit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #0284c7;
+            --primary-dark: #0f172a;
+            --card-bg: rgba(15, 23, 42, 0.88);
+            --card-border: rgba(56, 189, 248, 0.25);
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-blue: #38bdf8;
+            --accent-red: #ef4444;
+            --accent-purple: #a855f7;
+            --accent-teal: #14b8a6;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            margin: 0;
+            padding: 0;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #0f172a;
+            color: var(--text-main);
+        }
+
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* Fullscreen UI HUD */
+        #hud-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 10px 14px;
+        }
+
+        .interactive {
+            pointer-events: auto;
+        }
+
+        /* ================= 1. TOP HEADER BAR ================= */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 8px 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #0284c7, #0ea5e9);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(2, 132, 199, 0.5);
+        }
+
+        .brand-text h1 {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+
+        .brand-text span {
+            font-size: 11px;
+            color: #7dd3fc;
+            font-weight: 400;
+        }
+
+        .header-widgets {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .live-clock-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(30, 41, 59, 0.75);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+
+        .live-clock-badge span.time {
+            font-weight: 600;
+            color: #38bdf8;
+            font-size: 13px;
+        }
+
+        .top-btn {
+            background: rgba(30, 41, 59, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            color: #f8fafc;
+            padding: 5px 11px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .top-btn:hover, .top-btn.active {
+            background: #0284c7;
+            border-color: #38bdf8;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+        }
+
+        .top-btn.assembly-btn {
+            background: rgba(16, 185, 129, 0.22);
+            border-color: #10b981;
+            color: #34d399;
+        }
+
+        .top-btn.assembly-btn:hover {
+            background: #10b981;
+            color: #fff;
+        }
+
+        /* ================= 2. TOP FLOATING STATS ================= */
+        .top-stats-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+            max-width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 10px 14px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .summary-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .summary-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 3px;
+        }
+
+        .summary-main-count {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .summary-main-count .icon-box {
+            font-size: 24px;
+            color: #38bdf8;
+        }
+
+        .summary-main-count .num {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .summary-main-count .unit {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-left: 2px;
+        }
+
+        .stat-badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .badge-box {
+            padding: 5px 10px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 64px;
+        }
+
+        .badge-box.waiting {
+            background: rgba(250, 204, 21, 0.18);
+            border: 1px solid #eab308;
+            color: #fde047;
+        }
+
+        .badge-box.treatment {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid #10b981;
+            color: #34d399;
+        }
+
+        .badge-box.refer {
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid #f59e0b;
+            color: #fbbf24;
+        }
+
+        .badge-box.discharge {
+            background: rgba(56, 189, 248, 0.2);
+            border: 1px solid #0284c7;
+            color: #38bdf8;
+        }
+
+        .badge-box.death {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #f87171;
+        }
+
+        .badge-box.admit {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid #a855f7;
+            color: #c084fc;
+        }
+
+        .badge-box.beds {
+            background: rgba(20, 184, 166, 0.2);
+            border: 1px solid #14b8a6;
+            color: #2dd4bf;
+        }
+
+        .badge-box .lbl {
+            font-size: 10px;
+            display: block;
+            opacity: 0.9;
+        }
+
+        .badge-box .val {
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .top-diseases-card {
+            min-width: 300px;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .top-diseases-card h3 {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .disease-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            margin-bottom: 3px;
+            color: #e2e8f0;
+        }
+
+        .disease-item .d-name {
+            width: 130px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .disease-item .d-bar-bg {
+            flex: 1;
+            height: 6px;
+            background: #334155;
+            border-radius: 3px;
+            margin: 0 8px;
+            overflow: hidden;
+        }
+
+        .disease-item .d-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0284c7, #38bdf8);
+            border-radius: 3px;
+        }
+
+        .disease-item .d-count {
+            width: 45px;
+            text-align: right;
+            color: #94a3b8;
+        }
+
+        /* ================= 3. MIDDLE BODY AREA ================= */
+        .middle-hud {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex: 1;
+            margin: 10px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 6px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            width: 48px;
+            max-height: calc(100vh - 230px);
+            transition: width 0.25s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .left-menu:hover {
+            width: 175px;
+        }
+
+        .left-menu::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .left-menu::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 10px;
+            border-radius: 8px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            text-align: left;
+        }
+
+        .nav-btn .icon {
+            font-size: 15px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+        }
+
+        .nav-btn.active {
+            background: #0284c7;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+        }
+
+        .right-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 265px;
+            max-height: calc(100vh - 230px);
+            overflow-y: auto;
+        }
+
+        .right-sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .right-sidebar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        .panel-box {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 9px 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-box h4 {
+            font-size: 12px;
+            font-weight: 600;
+            color: #38bdf8;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .panel-box h4 .tag-live {
+            font-size: 9px;
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .status-row:last-child {
+            border-bottom: none;
+        }
+
+        .status-row .lbl-grp {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #cbd5e1;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .dot-blue { background: #38bdf8; box-shadow: 0 0 6px #38bdf8; }
+        .dot-yellow { background: #facc15; box-shadow: 0 0 6px #facc15; }
+        .dot-green { background: #10b981; box-shadow: 0 0 6px #10b981; }
+        .dot-cyan { background: #06b6d4; box-shadow: 0 0 6px #06b6d4; }
+        .dot-orange { background: #f97316; box-shadow: 0 0 6px #f97316; }
+        .dot-purple { background: #a855f7; box-shadow: 0 0 6px #a855f7; }
+        .dot-red { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+
+        .status-row .val {
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .kiosk-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            margin-top: 4px;
+        }
+
+        .kiosk-badge {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 6px;
+            padding: 4px;
+            text-align: center;
+            font-size: 10px;
+        }
+
+        .kiosk-badge .k-id {
+            font-weight: 600;
+            color: #94a3b8;
+            display: block;
+        }
+
+        .kiosk-badge .k-st {
+            font-size: 9px;
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        /* ================= 4. BOTTOM BAR ================= */
+        .bottom-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            pointer-events: auto;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .camera-views-box {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 4px 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+            flex-wrap: wrap;
+        }
+
+        .cam-btn {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            color: #cbd5e1;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cam-btn:hover {
+            border-color: #38bdf8;
+            color: #fff;
+        }
+
+        .cam-btn.active {
+            background: #0284c7;
+            color: white;
+            border-color: #38bdf8;
+            box-shadow: 0 0 10px rgba(2, 132, 199, 0.5);
+        }
+
+        /* ================= 5. 3D FLOATING TAGS & INSPECTOR ================= */
+        .name-tag {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: rgba(15, 23, 42, 0.88);
+            color: #f8fafc;
+            border: 1px solid rgba(56, 189, 248, 0.55);
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 500;
+            transform: translate3d(0, 0, 0) translate(-50%, -100%);
+            will-change: transform;
+            pointer-events: none;
+            z-index: 20;
+            white-space: nowrap;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+        }
+
+        .name-tag .role-pill {
+            font-size: 9px;
+            padding: 0 4px;
+            border-radius: 3px;
+            margin-right: 4px;
+            font-weight: 600;
+        }
+
+        .name-tag .state-pill {
+            display: block;
+            font-size: 8.5px;
+            color: #7dd3fc;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .speech-bubble {
+            display: none;
+            position: relative;
+            max-width: 220px;
+            white-space: normal;
+            line-height: 1.3;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(240, 249, 255, 0.97));
+            color: #0f172a;
+            border: 1.5px solid #0284c7;
+            border-radius: 10px;
+            padding: 4px 8px;
+            margin-bottom: 5px;
+            font-size: 10.5px;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+            text-align: center;
+            animation: popBubble 0.22s ease-out;
+        }
+
+        .speech-bubble.staff-bubble {
+            background: linear-gradient(135deg, rgba(224, 242, 254, 0.97), rgba(255, 255, 255, 0.97));
+            border-color: #0284c7;
+            color: #0c4a6e;
+        }
+
+        .speech-bubble.patient-bubble {
+            background: linear-gradient(135deg, rgba(254, 243, 199, 0.97), rgba(255, 255, 255, 0.97));
+            border-color: #d97706;
+            color: #78350f;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 5px 5px 0;
+            border-style: solid;
+            border-color: #0284c7 transparent transparent;
+        }
+
+        .speech-bubble.patient-bubble::after {
+            border-color: #d97706 transparent transparent;
+        }
+
+        @keyframes popBubble {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .chat-feed {
+            max-height: 125px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding-right: 2px;
+        }
+
+        .chat-feed-item {
+            font-size: 10px;
+            line-height: 1.3;
+            padding: 4px 6px;
+            border-radius: 6px;
+            background: rgba(30, 41, 59, 0.72);
+            border-left: 3px solid #38bdf8;
+            color: #e2e8f0;
+        }
+
+        .chat-feed-item .speaker {
+            font-weight: 600;
+            color: #7dd3fc;
+            margin-right: 4px;
+        }
+
+        .chat-feed-item .zone-tag {
+            font-size: 8.5px;
+            color: #94a3b8;
+            float: right;
+        }
+
+        #inspector-modal {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #38bdf8;
+            border-radius: 12px;
+            padding: 12px 16px;
+            width: 300px;
+            z-index: 30;
+            display: none;
+            pointer-events: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+        }
+
+        #inspector-modal h5 {
+            font-size: 14px;
+            color: #38bdf8;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #inspector-modal .close-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* ================= SIMULATOR PRELOADER OVERLAY ================= */
+        #simulator-preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            background: radial-gradient(circle at center, #0f172a 0%, #030712 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .preloader-content {
+            width: 90%;
+            max-width: 490px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75), 0 0 40px rgba(2, 132, 199, 0.25);
+            border-radius: 20px;
+            padding: 34px 30px;
+            text-align: center;
+            backdrop-filter: blur(18px);
+        }
+
+        .preloader-logo-box {
+            position: relative;
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preloader-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid #38bdf8;
+            animation: preloaderPulse 1.8s infinite ease-out;
+        }
+
+        @keyframes preloaderPulse {
+            0% { transform: scale(0.85); opacity: 0.9; }
+            100% { transform: scale(1.45); opacity: 0; }
+        }
+
+        .preloader-icon {
+            font-size: 38px;
+            z-index: 2;
+            filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.7));
+        }
+
+        .preloader-title {
+            font-size: 21px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .preloader-subtitle {
+            font-size: 12px;
+            color: #7dd3fc;
+            margin-bottom: 22px;
+            font-weight: 400;
+        }
+
+        .preloader-progress-wrap {
+            width: 100%;
+            height: 10px;
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .preloader-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #0284c7, #38bdf8, #818cf8);
+            border-radius: 10px;
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.7);
+            transition: width 0.25s ease-out;
+        }
+
+        .preloader-status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #cbd5e1;
+            margin-bottom: 18px;
+        }
+
+        #preloader-percent-text {
+            font-weight: 700;
+            color: #38bdf8;
+            font-size: 14px;
+        }
+
+        .preloader-steps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            text-align: left;
+            background: rgba(15, 23, 42, 0.65);
+            border-radius: 12px;
+            padding: 12px 14px;
+            border: 1px solid rgba(148, 163, 184, 0.15);
+        }
+
+        .preloader-step-item {
+            font-size: 11px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s, font-weight 0.3s;
+        }
+
+        .preloader-step-item.active {
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        .preloader-step-item.done {
+            color: #34d399;
+        }
+
+        /* ปุ่ม Play เริ่มต้นสำหรับเริ่มเตรียมความพร้อม Simulator */
+        .preloader-init-wrap {
+            margin-top: 10px;
+            animation: fadeInPreload 0.4s ease-out;
+        }
+
+        .preloader-init-desc {
+            font-size: 13px;
+            color: #cbd5e1;
+            margin-bottom: 22px;
+            line-height: 1.6;
+        }
+
+        .preloader-init-desc span {
+            display: block;
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .preloader-play-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 50%, #38bdf8 100%);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            border-radius: 14px;
+            padding: 14px 36px;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 0 25px rgba(2, 132, 199, 0.6), 0 8px 24px rgba(0, 0, 0, 0.45);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preloader-play-btn:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 0 38px rgba(56, 189, 248, 0.85), 0 12px 28px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, #0369a1 0%, #0284c7 50%, #0ea5e9 100%);
+        }
+
+        .preloader-play-btn:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        .preloader-play-btn .play-triangle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.22);
+            border-radius: 50%;
+            font-size: 13px;
+            padding-left: 2px;
+        }
+
+        @keyframes fadeInPreload {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- Fullscreen Preloader: กำลังเตรียมความพร้อม Simulator -->
+    <div id="simulator-preloader">
+        <div class="preloader-content">
+            <div class="preloader-logo-box">
+                <div class="preloader-pulse"></div>
+                <div class="preloader-icon">🏨</div>
+            </div>
+            <h2 class="preloader-title" id="preloader-main-title">ระบบจำลองสถานการณ์โรงพยาบาล 3D</h2>
+            <p class="preloader-subtitle" id="preloader-main-subtitle">Smart Hospital 3D Simulation Platform</p>
+
+            <!-- Initial Play Prompt (ก่อนเริ่มโหลด รอผู้ใช้กด Play) -->
+            <div id="preloader-init-box" class="preloader-init-wrap">
+                <div class="preloader-init-desc">
+                    พร้อมจำลองสถานการณ์โรงพยาบาลแบบเรียลไทม์
+                    <span>กดปุ่ม Play เพื่อเริ่มเตรียมความพร้อมและโหลดโมเดล 3D เข้าหน่วยความจำ</span>
+                </div>
+                <button id="btn-preloader-play" class="preloader-play-btn" onclick="window.startSimulatorPreloader && window.startSimulatorPreloader()">
+                    <span class="play-triangle">▶</span>
+                    <span>เริ่มระบบ Simulator (PLAY)</span>
+                </button>
+            </div>
+
+            <!-- Loading Progress (แสดงขณะกำลังเตรียมความพร้อม) -->
+            <div id="preloader-loading-box" style="display: none;">
+                <div class="preloader-progress-wrap">
+                    <div class="preloader-bar" id="preloader-progress-bar"></div>
+                </div>
+
+                <div class="preloader-status-row">
+                    <span id="preloader-status-text">กำลังเริ่มต้นเตรียมทรัพยากร...</span>
+                    <span id="preloader-percent-text">0%</span>
+                </div>
+
+                <div class="preloader-steps-list">
+                    <div class="preloader-step-item active" id="step-env">🏗️ 1. โครงสร้างโรงพยาบาลและระบบแสง</div>
+                    <div class="preloader-step-item" id="step-models">👥 2. โหลดโมเดลบุคลากรและตัวละครเข้าแคช</div>
+                    <div class="preloader-step-item" id="step-anims">🏃 3. โหลดระบบท่าทางและการเคลื่อนไหว (Animations)</div>
+                    <div class="preloader-step-item" id="step-vehicles">🚑 4. รถพยาบาลฉุกเฉินและระบบจราจร</div>
+                    <div class="preloader-step-item" id="step-gpu">⚡ 5. คอมไพล์ Shader และหน่วยความจำ GPU</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="canvas-container"></div>
+    <div id="ui-layer"></div>
+
+    <div id="hud-container">
+        <div>
+            <!-- Top Navbar -->
+            <div class="top-nav interactive">
+                <div class="header-brand">
+                    <div class="brand-icon">🏥</div>
+                    <div class="brand-text">
+                        <h1>โรงพยาบาลจำลอง 3D</h1>
+                        <span>ระบบจำลองสถานการณ์โรงพยาบาลครบวงจร (Smart HI Simulator)</span>
+                    </div>
+                </div>
+
+                <div class="header-widgets">
+                    <button class="top-btn assembly-btn" onclick="window.triggerMorningAssembly && window.triggerMorningAssembly()" title="เริ่มลำดับเข้าแถวรวมพลเจ้าหน้าที่ใหม่">
+                        <span>📢</span> <span>เรียกเข้าแถวรวมพล</span>
+                    </button>
+                    <button class="top-btn" onclick="window.triggerAssemblyDance && window.triggerAssemblyDance()" title="ให้เจ้าหน้าที่เต้นออกกำลังกายและทักทายที่ลานรวมพล">
+                        <span>💃</span> <span>เต้นรวมพล/ทักทาย</span>
+                    </button>
+                    <button class="top-btn" onclick="window.spawnDemoPatient && window.spawnDemoPatient('normal')" title="เพิ่มผู้มารับบริการ OPD (สุ่มเดินมา หรือรถมาส่ง)">
+                        <span>➕</span> <span>เพิ่มผู้ป่วย OPD (สุ่ม)</span>
+                    </button>
+                    <button class="top-btn" onclick="window.spawnDemoPatient && window.spawnDemoPatient('er')" title="จำลองผู้ป่วยฉุกเฉิน ER">
+                        <span>🚑</span> <span>ผู้ป่วยฉุกเฉิน ER</span>
+                    </button>
+                    <button class="top-btn" onclick="window.triggerPolicePatrol && window.triggerPolicePatrol()" title="เรียกตำรวจสายตรวจ 2 นาย นั่งรถตำรวจมาตรวจตราหน้า รพ. และครบทุกโซน">
+                        <span>🚓</span> <span>สายตรวจ รพ.</span>
+                    </button>
+                    <button class="top-btn" id="btn-hourly-sync" onclick="window.triggerHourlyUpdate && window.triggerHourlyUpdate()" title="อัปเดตข้อมูลเจ้าหน้าที่และผู้ป่วยรอบ 1 ชั่วโมง (หรือคลิกเพื่อทดสอบอัปเดตทันที)">
+                        <span>🔄</span> <span id="hourly-sync-text">รอบ 1 ชม. (ถัดไป: 60:00)</span>
+                    </button>
+                    <button class="top-btn" id="btn-fullscreen-win" onclick="toggleWindowFullScreen()">
+                        <span>⛶</span> <span>ขยายจอ 30/70</span>
+                    </button>
+
+                    <div class="live-clock-badge" id="time-period-widget" style="cursor: pointer;" onclick="window.cycleTimePeriodMode && window.cycleTimePeriodMode()" title="คลิกเพื่อสลับโหมดเวลาจริง (Auto) หรือทดสอบแสงบรรยากาศ เช้า / เที่ยง / บ่าย / เย็น / ค่ำ">
+                        <span id="time-period-badge" style="font-weight: 600; color: #fde68a; background: rgba(245, 158, 11, 0.18); border: 1px solid rgba(251, 191, 36, 0.45); padding: 2px 8px; border-radius: 6px;">☀️ ช่วงบ่าย (ตามเวลาจริง)</span>
+                        <span>📅 <span id="current-date">-- ต.ค. ----</span></span>
+                        <span>⏱️ <span id="current-time" class="time">--:--:--</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Floating Stats Row (5. HospitalDashboard) -->
+            <div class="top-stats-row interactive">
+                <div class="card summary-card">
+                    <div>
+                        <div class="summary-title">Hospital Dashboard (สถิติบริการเรียลไทม์)</div>
+                        <div class="summary-main-count">
+                            <div class="icon-box">🏥</div>
+                            <div>
+                                <span style="font-size: 10px; color: #94a3b8; display: block;">ผู้ป่วยรวมทั้งหมด</span>
+                                <span id="total-patients-count" class="num">0</span>
+                                <span class="unit">ราย</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-badges">
+                        <div class="badge-box waiting">
+                            <span class="lbl">กำลังรอคิว</span>
+                            <span id="waiting-queue-count" class="val">0</span>
+                            <span class="lbl">ราย</span>
+                        </div>
+                        <div class="badge-box treatment">
+                            <span class="lbl">กำลังรักษา</span>
+                            <span id="treating-count" class="val">0</span>
+                            <span class="lbl">ราย</span>
+                        </div>
+                        <div class="badge-box admit">
+                            <span class="lbl">ADMIT (ใน)</span>
+                            <span id="admit-count" class="val">0</span>
+                            <span class="lbl">ราย</span>
+                        </div>
+                        <div class="badge-box refer">
+                            <span class="lbl">ส่งต่อ REFER</span>
+                            <span id="refer-count" class="val">0</span>
+                            <span class="lbl">ราย</span>
+                        </div>
+                        <div class="badge-box discharge">
+                            <span class="lbl">กลับบ้าน</span>
+                            <span id="discharge-count" class="val">0</span>
+                            <span class="lbl">ราย</span>
+                        </div>
+                        <div class="badge-box death">
+                            <span class="lbl">เสียชีวิต</span>
+                            <span id="death-count" class="val">0</span>
+                            <span class="lbl">ราย</span>
+                        </div>
+                        <div class="badge-box beds">
+                            <span class="lbl">เตียง IPD ว่าง</span>
+                            <span id="free-beds-count" class="val">10/10</span>
+                            <span class="lbl">เตียง</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- สถานะลานรวมพล & Kiosk -->
+                <div class="card top-diseases-card">
+                    <h3>
+                        <span>สถานะตู้ Kiosk อัตโนมัติ (3 ตู้) & ลานรวมพล</span>
+                        <span id="assembly-phase-badge" style="color: #34d399; font-size: 10px;">กำลังรวมพล</span>
+                    </h3>
+                    <div class="kiosk-grid">
+                        <div class="kiosk-badge">
+                            <span class="k-id">🖥️ Kiosk #1</span>
+                            <span class="k-st" id="kiosk-status-1">ว่าง</span>
+                        </div>
+                        <div class="kiosk-badge">
+                            <span class="k-id">🖥️ Kiosk #2</span>
+                            <span class="k-st" id="kiosk-status-2">ว่าง</span>
+                        </div>
+                        <div class="kiosk-badge">
+                            <span class="k-id">🖥️ Kiosk #3</span>
+                            <span class="k-st" id="kiosk-status-3">ว่าง</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Middle Hud -->
+        <div class="middle-hud">
+            <!-- Left Quick Zone Camera Menu -->
+            <div class="left-menu interactive">
+                <button class="nav-btn active" onclick="window.focusZone && window.focusZone('OVERVIEW')"><span class="icon">🏥</span><span>ภาพรวมทั้ง รพ.</span></button>
+                <button class="nav-btn" onclick="window.focusZone && window.focusZone('ASSEMBLY')"><span class="icon">🚩</span><span>1. ลานรวมพล</span></button>
+                <button class="nav-btn" onclick="window.focusZone && window.focusZone('ENTRANCE')"><span class="icon">🚪</span><span>2. ทางเข้า & คัดกรอง</span></button>
+                <button class="nav-btn" onclick="window.focusZone && window.focusZone('REGISTRATION')"><span class="icon">🪪</span><span>3. ห้องบัตร & Kiosk</span></button>
+                <button class="nav-btn" onclick="window.focusZone && window.focusZone('OPD')"><span class="icon">🩺</span><span>4. ผู้ป่วยนอก (OPD)</span></button>
+                <button class="nav-btn" onclick="window.focusZone && window.focusZone('ER')"><span class="icon">🚑</span><span>5. ฉุกเฉิน (ER)</span></button>
+                <button class="nav-btn" onclick="window.focusZone && window.focusZone('IPD')"><span class="icon">🛏️</span><span>6. ผู้ป่วยใน (IPD)</span></button>
+                <button class="nav-btn" onclick="window.focusZone && window.focusZone('DENTAL')"><span class="icon">🦷</span><span>7. ทันตกรรม</span></button>
+                <button class="nav-btn" onclick="window.focusZone && window.focusZone('THAIMED')"><span class="icon">🌿</span><span>8. แพทย์แผนไทย</span></button>
+                <button class="nav-btn" onclick="window.focusZone && window.focusZone('PHYSIO')"><span class="icon">🏃</span><span>9. กายภาพบำบัด</span></button>
+                <button class="nav-btn" onclick="window.focusZone && window.focusZone('LAB')"><span class="icon">🔬</span><span>10. ห้องแล็บ (LAB)</span></button>
+                <button class="nav-btn" onclick="window.focusZone && window.focusZone('XRAY')"><span class="icon">☢️</span><span>11. เอกซเรย์ (X-ray)</span></button>
+                <button class="nav-btn" onclick="window.focusZone && window.focusZone('PHARMACY')"><span class="icon">💊</span><span>12. เภสัชกรรม</span></button>
+                <button class="nav-btn" onclick="window.focusZone && window.focusZone('FINANCE')"><span class="icon">💳</span><span>13. การเงิน</span></button>
+            </div>
+            <!-- Right Status Sidebar -->
+            <div class="right-sidebar interactive">
+                <div class="panel-box">
+                    <h4>บุคลากรและตัวละคร <span class="tag-live">Real-time</span></h4>
+                    <div class="status-row">
+                        <span class="lbl-grp"><span class="status-dot dot-blue"></span>เจ้าหน้าที่จริง (DB)</span>
+                        <span class="val" id="board-staff-total">0</span>
+                    </div>
+                    <div class="status-row">
+                        <span class="lbl-grp"><span class="status-dot dot-green"></span>เจ้าหน้าที่ในฉาก 3D</span>
+                        <span class="val" id="board-staff-active">0</span>
+                    </div>
+                    <div class="status-row">
+                        <span class="lbl-grp"><span class="status-dot dot-orange"></span>ผู้ป่วยกำลังเคลื่อนที่ในฉาก</span>
+                        <span class="val" id="board-patient-sim" style="color: #38bdf8;">0</span>
+                    </div>
+                    <div class="status-row">
+                        <span class="lbl-grp"><span class="status-dot dot-yellow"></span>อัปเดตรอบ 1 ชม.</span>
+                        <span class="val" id="hourly-update-status" style="color: #fde68a;">เริ่มระบบ</span>
+                    </div>
+                </div>
+
+                <div class="panel-box">
+                    <h4>ความหนาแน่นแต่ละจุดบริการ</h4>
+                    <div class="status-row">
+                        <span class="lbl-grp"><span class="status-dot dot-cyan"></span>จุดคัดกรอง / ห้องบัตร</span>
+                        <span class="val" id="dept-count-reg">0 ราย</span>
+                    </div>
+                    <div class="status-row">
+                        <span class="lbl-grp"><span class="status-dot dot-blue"></span>ซักประวัติ (5 โต๊ะ) & ห้องตรวจ (5)</span>
+                        <span class="val" id="dept-count-opd">0 ราย</span>
+                    </div>
+                    <div class="status-row">
+                        <span class="lbl-grp"><span class="status-dot dot-red"></span>แผนกฉุกเฉิน (ER 5 เตียง)</span>
+                        <span class="val" id="dept-count-er">0 ราย</span>
+                    </div>
+                    <div class="status-row">
+                        <span class="lbl-grp"><span class="status-dot dot-purple"></span>หอผู้ป่วยใน (IPD 10 เตียง)</span>
+                        <span class="val" id="dept-count-ipd">0 ราย</span>
+                    </div>
+                    <div class="status-row">
+                        <span class="lbl-grp"><span class="status-dot dot-green"></span>ทันตกรรม / แผนไทย / กายภาพ</span>
+                        <span class="val" id="dept-count-spec">0 ราย</span>
+                    </div>
+                    <div class="status-row">
+                        <span class="lbl-grp"><span class="status-dot dot-yellow"></span>LAB / X-ray / ห้องยา / การเงิน</span>
+                        <span class="val" id="dept-count-diag">0 ราย</span>
+                    </div>
+                </div>
+
+                <div class="panel-box">
+                    <h4>💬 บทสนทนาเรียลไทม์ <span class="tag-live">Live Chat</span></h4>
+                    <div class="chat-feed" id="chat-feed-box">
+                        <div class="chat-feed-item"><span class="speaker">ระบบ:</span>เริ่มต้นระบบสนทนาโรงพยาบาล...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inspector Modal -->
+        <div id="inspector-modal">
+            <h5>
+                <span id="insp-name">ชื่อตัวละคร</span>
+                <button class="close-btn" onclick="document.getElementById('inspector-modal').style.display='none'">✕</button>
+            </h5>
+            <div class="status-row"><span class="lbl-grp">บทบาท/แผนก:</span><span class="val" id="insp-role">-</span></div>
+            <div class="status-row"><span class="lbl-grp">สถานะปัจจุบัน:</span><span class="val" id="insp-state" style="color:#34d399;">-</span></div>
+            <div class="status-row"><span class="lbl-grp">ท่าทาง (Animation):</span><span class="val" id="insp-anim" style="color:#38bdf8;">-</span></div>
+            <div class="status-row"><span class="lbl-grp">บทสนทนาล่าสุด:</span><span class="val" id="insp-chat" style="color:#fde68a;">-</span></div>
+            <div class="status-row"><span class="lbl-grp">จุดหมายถัดไป:</span><span class="val" id="insp-target">-</span></div>
+        </div>
+
+        <!-- Bottom Nav -->
+        <div class="bottom-nav">
+            <div class="camera-views-box">
+                <button class="cam-btn active" id="cam-btn-overview" onclick="window.focusZone && window.focusZone('OVERVIEW')">มุมมอง 3D ภาพรวม</button>
+                <button class="cam-btn" id="cam-btn-top" onclick="window.focusZone && window.focusZone('TOP')">มุมมองด้านบน (Top Plan)</button>
+                <button class="cam-btn" id="cam-btn-assembly" onclick="window.focusZone && window.focusZone('ASSEMBLY')">มุมมองลานรวมพล</button>
+                <button class="cam-btn" onclick="window.toggleChatBubbles && window.toggleChatBubbles()">💬 เปิด/ปิดบอลลูนคำพูด</button>
+                <button class="cam-btn" onclick="window.toggleLabels && window.toggleLabels()">ซ่อน/แสดงป้ายชื่อ</button>
+                <button class="cam-btn" onclick="window.toggleWalls && window.toggleWalls()">ลด/เพิ่มความสูงกำแพง</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateThaiClock() {
+            const now = new Date();
+            const thaiMonths = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+            const d = now.getDate();
+            const m = thaiMonths[now.getMonth()];
+            const y = now.getFullYear() + 543;
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            const ss = String(now.getSeconds()).padStart(2, '0');
+
+            const dateEl = document.getElementById('current-date');
+            const timeEl = document.getElementById('current-time');
+            if (dateEl) dateEl.innerText = `${d} ${m} ${y}`;
+            if (timeEl) timeEl.innerText = `${hh}:${mm}:${ss} น.`;
+        }
+        setInterval(updateThaiClock, 1000);
+        updateThaiClock();
+
+        function toggleWindowFullScreen() {
+            if (window.chrome && window.chrome.webview) {
+                window.chrome.webview.postMessage("toggleFullScreen");
+            }
+        }
+    </script>
+
+    <script type="module" src="./js/app.js"></script>
+</body>
+</html>
